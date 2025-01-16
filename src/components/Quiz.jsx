@@ -1,4 +1,4 @@
-import { act, useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import QUESTIONS from '../question.js'
 import React from "react"
 import quizCompleteImg from '../assets/quiz-complete.png'
@@ -17,7 +17,9 @@ const handleSelectAnswer=useCallback(function handleSelectAnswer(selectedAnswer)
         return ([...prev,selectedAnswer])
     })
     console.log(activeQuestionIndex);
-})
+},[])
+
+const handleSkipAnswer=useCallback(()=>handleSelectAnswer(null),[handleSelectAnswer])
 
 
 if(quizIsComplete){
@@ -32,7 +34,7 @@ shuffledAnswers.sort(()=>Math.random()-0.5)
     return(<>
         <div id="quiz">
             <div id="questions">
-            <QuestionTimer timeout={15000} onTimeout={() => handleSelectAnswer(null)} />
+            <QuestionTimer key={activeQuestionIndex} timeout={15000} onTimeout= {handleSkipAnswer} />
 
                 <h2>{QUESTIONS[activeQuestionIndex].text}</h2>
                 <ul id="answers">
