@@ -6,6 +6,14 @@ function Question({index, onSelectAnswer, onSkipAnswer}){
     const [answer,setAnswer] = useState({selectedAnswer:'',
                 isCorrect:null
     })
+
+    let timer=15000
+    if(answer.selectedAnswer){
+        timer=1000
+    }
+    if(answer.isCorrect!==null){
+        timer=2000
+    }
     function handleSelectAnswer(answer){
         setAnswer({
             selectedAnswer:answer,
@@ -33,8 +41,10 @@ function Question({index, onSelectAnswer, onSkipAnswer}){
     return(
         <div id="question">
             <QuestionTimer
-                timeout={15000} 
-                onTimeout= {onSkipAnswer} 
+                key={timer}
+                timeout={timer} 
+                onTimeout= {answer.selectedAnswer===''? onSkipAnswer:null} 
+                mode={answerState}
             />
             <h2>{QUESTIONS[index].text}</h2>
             <Answers 
